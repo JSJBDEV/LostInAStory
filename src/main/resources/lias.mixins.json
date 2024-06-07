@@ -3,7 +3,9 @@
 	"package": "ace.actually.lias.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"WorldChunkMixin",
+		"PlayerStoryCharacterMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
