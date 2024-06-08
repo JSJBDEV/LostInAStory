@@ -3,19 +3,14 @@ package ace.actually.lias;
 import ace.actually.lias.blocks.WornParchmentBlock;
 import ace.actually.lias.interfaces.IStoryCharacter;
 import ace.actually.lias.items.StoryBookItem;
+import ace.actually.lias.schema.Quests;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.impl.networking.CustomPayloadTypeProvider;
-import net.fabricmc.fabric.impl.networking.server.ServerNetworkingImpl;
-import net.fabricmc.fabric.impl.registry.sync.packet.DirectRegistryPacketHandler;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Blocks;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
@@ -23,10 +18,11 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.Structure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +32,8 @@ public class LIAS implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("lias");
 	public static final RegistryKey<World> STORYTELLERS_DIMENSION = RegistryKey.of(RegistryKeys.WORLD,Identifier.of("lias","storyteller"));
+	public static final TagKey<Structure> DESERT_PYRAMIDS = TagKey.of(RegistryKeys.STRUCTURE,Identifier.of("lias","desert_pyramids"));
+	public static final TagKey<Structure> JUNGLE_PYRAMIDS = TagKey.of(RegistryKeys.STRUCTURE,Identifier.of("lias","jungle_pyramids"));
 
 	public static final Identifier CONSIDER_PACKET = Identifier.of("lias","consider_packet");
 
@@ -44,6 +42,7 @@ public class LIAS implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+
 		registerItems();
 		registerBlocks();
 		PayloadTypeRegistry.playC2S().register(KeyPayload.ID,KeyPayload.CODEC);
@@ -52,7 +51,7 @@ public class LIAS implements ModInitializer {
 			context.player().server.execute(()->
 			{
 				IStoryCharacter character = (IStoryCharacter) context.player();
-				context.player().sendMessage(Text.translatable("text.lias.consider1").append("\"").append(getNextQuestText(character)).append("\"").append(Text.translatable("text.lias.consider2")));
+				context.player().sendMessage(Text.translatable("text.lias.consider1").append("\"").append(Quests.getNextQuestText(character)).append("\"").append(Text.translatable("text.lias.consider2")));
 			});
 		}));
 		LOGGER.info("Hello Fabric world!");
@@ -81,40 +80,5 @@ public class LIAS implements ModInitializer {
 		}
 	}
 
-	public static String getNextQuestText(IStoryCharacter character)
-	{
-		NbtList quests = getQuestList(character);
-		if(!quests.isEmpty())
-		{
-			NbtCompound quest = quests.getCompound(0);
-			return quest.getString("text");
-		}
-		return "Nothing";
-	}
-	public static BlockPos getNextQuestLocation(IStoryCharacter character)
-	{
-		NbtList quests = getQuestList(character);
-		if(!quests.isEmpty())
-		{
-			NbtCompound quest = quests.getCompound(0);
-			int[] v = quest.getIntArray("location");
-			return new BlockPos(v[0],v[1],v[2]);
-		}
-		return null;
-	}
 
-	public static String getNextQuestEvent(IStoryCharacter character)
-	{
-		NbtList quests = getQuestList(character);
-		if(!quests.isEmpty())
-		{
-			NbtCompound quest = quests.getCompound(0);
-			return quest.getString("additionalEvent");
-		}
-		return "Nothing";
-	}
-	public static NbtList getQuestList(IStoryCharacter character)
-	{
-		return (NbtList) character.getStory().get("quests");
-	}
 }

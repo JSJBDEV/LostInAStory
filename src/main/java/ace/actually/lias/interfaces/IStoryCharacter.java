@@ -8,4 +8,6 @@ public interface IStoryCharacter {
 
     NbtCompound getStory();
     void setStory(NbtCompound compound);
+
+    void onLocationArrived();
 }

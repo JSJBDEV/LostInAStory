@@ -1,20 +1,18 @@
 package ace.actually.lias.mixin;
 
-import ace.actually.lias.LIAS;
 import ace.actually.lias.interfaces.IStoryCharacter;
+import ace.actually.lias.schema.Quests;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.GuardianEntity;
+import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -76,9 +74,9 @@ public abstract class PlayerStoryCharacterMixin extends LivingEntity implements 
 
     @Inject(method = "tickMovement", at = @At("TAIL"))
     public void tick(CallbackInfo ci) {
-        if(getStory()!=null && LIAS.getNextQuestLocation(this)!=null)
+        if(getStory()!=null && Quests.getNextQuestLocation(this)!=null)
         {
-            if(getBlockPos().getSquaredDistance(LIAS.getNextQuestLocation(this).up(getBlockY()))<20)
+            if(getBlockPos().getSquaredDistance(Quests.getNextQuestLocation(this).up(getBlockY()))<20)
             {
                 onLocationArrived();
             }
@@ -86,14 +84,27 @@ public abstract class PlayerStoryCharacterMixin extends LivingEntity implements 
 
     }
 
+    @Override
     public void onLocationArrived()
     {
         sendMessage(Text.translatable("text.lias.location_found"));
-        String add = LIAS.getNextQuestEvent(this);
-        LIAS.getQuestList(this).remove(0);
+        String add = Quests.getNextQuestEvent(this);
+        Quests.getQuestList(this).remove(0);
         switch (add)
         {
-            case "plotpoint.lias.sea_monster" ->
+            case "event.plotpoint.lias.skeletons_attack"->
+            {
+                SkeletonEntity entity = new SkeletonEntity(EntityType.SKELETON,getWorld());
+                entity.setPos(getX()+10,getY(),getZ()+10);
+                //entity.setCustomName(Text.of("Craig"));
+                getWorld().spawnEntity(entity);
+
+                SkeletonEntity entity2 = new SkeletonEntity(EntityType.SKELETON,getWorld());
+                entity2.setPos(getX()-10,getY(),getZ()-10);
+                //entity.setCustomName(Text.of("Craig"));
+                getWorld().spawnEntity(entity2);
+            }
+            case "event.plotpoint.lias.sea_monster" ->
             {
                 GuardianEntity entity = new GuardianEntity(EntityType.GUARDIAN,getWorld());
                 entity.setPos(getX(),getY(),getZ());

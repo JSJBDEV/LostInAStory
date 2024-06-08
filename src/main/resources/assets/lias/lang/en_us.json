@@ -7,10 +7,12 @@
   "item.lias.mysterious_compass": "Mysterious Compass",
   "text.lias.location_found": "Location Found!",
 
-  "plotpoint.lias.sea_monster": "where you encounter a sea monster named",
+  "event.plotpoint.lias.sea_monster": "where you encounter a sea monster named",
 
-  "plotpoint.lias.skeletons_attack": "under attack by skeletons",
-  "text.plotpoint.lias.skeletons_attack": "Skeletons are attacking!",
+  "event.plotpoint.lias.skeletons_attack": "under attack by skeletons",
+  "text.event.plotpoint.lias.skeletons_attack": "Skeletons are attacking!",
+
+  "event.plotpoint.lias.travelling_merchant": "where you find a travelling merchant",
 
   "plotpoint.lias.wakeup": "You wake up in a ",
 
