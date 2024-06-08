@@ -13,6 +13,6 @@ public class ContinueLocationQuest extends LocationQuest{
 
     @Override
     public MutableText getPrefixPhrase() {
-        return Text.empty().append("You then set out for a ");
+        return Text.translatable("plotpoint.lias.setout");
     }
 }

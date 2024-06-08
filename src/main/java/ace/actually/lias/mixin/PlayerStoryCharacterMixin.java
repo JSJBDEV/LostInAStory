@@ -1,18 +1,24 @@
 package ace.actually.lias.mixin;
 
+import ace.actually.lias.LIAS;
 import ace.actually.lias.interfaces.IStoryCharacter;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtIntArray;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,6 +26,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerStoryCharacterMixin extends LivingEntity implements IStoryCharacter {
 
+    @Shadow public abstract void sendMessage(Text message, boolean overlay);
+
+    @Shadow public double capeX;
+    @Shadow public double capeY;
+
+    @Shadow @NotNull public abstract ItemStack getWeaponStack();
+
+    @Shadow public int experienceLevel;
     private static final TrackedData<NbtCompound> CHARACTER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
     protected PlayerStoryCharacterMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -57,9 +71,35 @@ public abstract class PlayerStoryCharacterMixin extends LivingEntity implements 
     @Inject(method = "initDataTracker", at = @At("TAIL"))
     protected void initDataTracker(DataTracker.Builder builder,CallbackInfo ci) {
         NbtCompound a = new NbtCompound();
-
         builder.add(CHARACTER,a.copy());
+    }
 
+    @Inject(method = "tickMovement", at = @At("TAIL"))
+    public void tick(CallbackInfo ci) {
+        if(getStory()!=null && LIAS.getNextQuestLocation(this)!=null)
+        {
+            if(getBlockPos().getSquaredDistance(LIAS.getNextQuestLocation(this).up(getBlockY()))<20)
+            {
+                onLocationArrived();
+            }
+        }
 
+    }
+
+    public void onLocationArrived()
+    {
+        sendMessage(Text.translatable("text.lias.location_found"));
+        String add = LIAS.getNextQuestEvent(this);
+        LIAS.getQuestList(this).remove(0);
+        switch (add)
+        {
+            case "plotpoint.lias.sea_monster" ->
+            {
+                GuardianEntity entity = new GuardianEntity(EntityType.GUARDIAN,getWorld());
+                entity.setPos(getX(),getY(),getZ());
+                entity.setCustomName(Text.of("Craig"));
+                getWorld().spawnEntity(entity);
+            }
+        }
     }
 }

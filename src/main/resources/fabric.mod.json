@@ -11,13 +11,13 @@
 		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/lias/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
 			"ace.actually.lias.LIAS"
-		]
+		],"client": ["ace.actually.lias.ClientLIAS"]
 	},
 	"mixins": [
 		"lias.mixins.json"

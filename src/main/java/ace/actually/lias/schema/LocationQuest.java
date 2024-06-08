@@ -11,6 +11,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.Structure;
 
+/**
+ * A location quest, where the player must reach a structure
+ */
 public class LocationQuest {
 
     BlockPos blockPos;
@@ -30,7 +33,7 @@ public class LocationQuest {
 
     public MutableText getPrefixPhrase()
     {
-        return Text.empty().append("You wake up in a ");
+        return Text.translatable("plotpoint.lias.wakeup");
     }
 
     public MutableText getText()
@@ -39,7 +42,7 @@ public class LocationQuest {
         {
             return Text.empty().append(getPrefixPhrase()).append(structureName);
         }
-        return Text.empty().append(getPrefixPhrase()).append(structureName).append(", ").append(additionalEvent);
+        return Text.empty().append(getPrefixPhrase()).append(structureName).append(", ").append(Text.translatable(additionalEvent));
     }
 
     public BlockPos getBlockPos() {

@@ -58,10 +58,11 @@ public class StoryBookItem extends Item {
                 int y = dim.getChunk(bottom).sampleHeightmap(Heightmap.Type.WORLD_SURFACE_WG, bottom.getX() & 15, bottom.getZ() & 15);
                 spe.teleport(dim, il[0],y+2,il[2],0,0);
 
-                if(quest1.getString("additionalEvent").equals("under attack by skeletons"))
+                if(quest1.getString("additionalEvent").equals("plotpoint.lias.skeletons_attack"))
                 {
+                    spe.sendMessage(Text.translatable("text.plotpoint.lias.skeletons_attack"));
                     SkeletonEntity skeletonEntity = new SkeletonEntity(EntityType.SKELETON,dim);
-                    skeletonEntity.teleport(il[0]+2,y,il[2]+2,true);
+                    skeletonEntity.teleport(il[0]+2,y+2,il[2]+2,true);
                     dim.spawnEntity(skeletonEntity);
                 }
                 quests.remove(0);
@@ -81,8 +82,8 @@ public class StoryBookItem extends Item {
     {
         NbtCompound compound = new NbtCompound();
         NbtList orderedQuests = new NbtList();
-        NbtCompound quest1 = new LocationQuest(spe, StructureTags.VILLAGE,"under attack by skeletons").toNbt();
-        NbtCompound quest2 = new ContinueLocationQuest(spe, StructureTags.OCEAN_RUIN,"nil").toNbt();
+        NbtCompound quest1 = new LocationQuest(spe, StructureTags.VILLAGE,"plotpoint.lias.skeletons_attack").toNbt();
+        NbtCompound quest2 = new ContinueLocationQuest(spe, StructureTags.OCEAN_RUIN,"plotpoint.lias.sea_monster").toNbt();
         orderedQuests.add(quest1);
         orderedQuests.add(quest2);
 

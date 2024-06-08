@@ -4,8 +4,9 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"ExampleMixin",
-		"WorldChunkMixin",
-		"PlayerStoryCharacterMixin"
+		"LootMixin",
+		"PlayerStoryCharacterMixin",
+		"WorldChunkMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
