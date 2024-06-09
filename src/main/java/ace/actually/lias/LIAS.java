@@ -2,15 +2,20 @@ package ace.actually.lias;
 
 import ace.actually.lias.blocks.WornParchmentBlock;
 import ace.actually.lias.interfaces.IStoryCharacter;
+import ace.actually.lias.items.CarryingSackItem;
 import ace.actually.lias.items.StoryBookItem;
 import ace.actually.lias.schema.Quests;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
@@ -35,7 +40,12 @@ public class LIAS implements ModInitializer {
 	public static final TagKey<Structure> DESERT_PYRAMIDS = TagKey.of(RegistryKeys.STRUCTURE,Identifier.of("lias","desert_pyramids"));
 	public static final TagKey<Structure> JUNGLE_PYRAMIDS = TagKey.of(RegistryKeys.STRUCTURE,Identifier.of("lias","jungle_pyramids"));
 
-	public static final Identifier CONSIDER_PACKET = Identifier.of("lias","consider_packet");
+	public static final ItemGroup TAB = FabricItemGroup.builder()
+			.icon(() -> new ItemStack(LIAS.STORY_BOOK_ITEM))
+			.displayName(Text.of("Lost In A Story"))
+			.build();
+
+
 
 	@Override
 	public void onInitialize() {
@@ -43,6 +53,7 @@ public class LIAS implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
+		Registry.register(Registries.ITEM_GROUP,Identifier.of("lias","tab"),TAB);
 		registerItems();
 		registerBlocks();
 		PayloadTypeRegistry.playC2S().register(KeyPayload.ID,KeyPayload.CODEC);
@@ -51,16 +62,26 @@ public class LIAS implements ModInitializer {
 			context.player().server.execute(()->
 			{
 				IStoryCharacter character = (IStoryCharacter) context.player();
-				context.player().sendMessage(Text.translatable("text.lias.consider1").append("\"").append(Quests.getNextQuestText(character)).append("\"").append(Text.translatable("text.lias.consider2")));
+				context.player().sendMessage(Text.translatable("text.lias.consider1").append(" \"").append(Quests.getNextQuestText(character)).append("\" ").append(Text.translatable("text.lias.consider2")));
 			});
 		}));
 		LOGGER.info("Hello Fabric world!");
 	}
 
 	public static final StoryBookItem STORY_BOOK_ITEM = new StoryBookItem(new Item.Settings());
+	public static final CarryingSackItem CARRYING_SACK_ITEM = new CarryingSackItem(new Item.Settings().maxCount(1));
 	private void registerItems()
 	{
+		int v = Registries.ITEM.size();
+
 		Registry.register(Registries.ITEM,Identifier.of("lias","storybook"),STORY_BOOK_ITEM);
+		Registry.register(Registries.ITEM,Identifier.of("lias","sack"),CARRYING_SACK_ITEM);
+
+		for (int i = v; i < Registries.ITEM.size(); i++) {
+			int finalI = i;
+			ItemGroupEvents.modifyEntriesEvent(Registries.ITEM_GROUP.getKey(TAB).get())
+					.register(a-> a.add(Registries.ITEM.get(finalI).getDefaultStack()));
+		}
 	}
 
 	public static final WornParchmentBlock WORN_PARCHMENT_BLOCK = new WornParchmentBlock(AbstractBlock.Settings.copy(Blocks.CYAN_WOOL));

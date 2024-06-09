@@ -1,13 +1,26 @@
 {
   "key.lias.consider": "Consider",
   "category.lias.main": "Lost In A Story",
-  "text.lias.consider1": "I think the story said that ",
-  "text.lias.consider2": " Maybe I should find a compass or a map?",
+  "text.lias.consider1": "I think the story said that",
+  "text.lias.consider2": "Maybe I should find a compass or a map?",
 
   "item.lias.mysterious_compass": "Mysterious Compass",
   "text.lias.location_found": "Location Found!",
 
-  "event.plotpoint.lias.sea_monster": "where you encounter a sea monster named",
+  "item.lias.woodcutters_axe": "Woodcutter's Axe",
+  "text.lias.breaks_wood": "Can fell the mightiest of trees!",
+
+  "item.lias.farmers_scythe": "Farmer's Scythe",
+  "text.lias.breaks_crops": "A Sturdy tool for gathering crops",
+
+  "item.lias.storybook": "Storybook",
+
+  "item.lias.sack": "Carrying Sack",
+  "text.lias.sack_carrying": "In this sack there is currently a",
+  "text.lias.sack_breaks": "Oh no! the sack has broken",
+  "text.lias.sack_could": "A woolen sack that can pick up blocks, not very sturdy however",
+
+  "event.plotpoint.lias.sea_monster": "where you encounter a sea monster",
 
   "event.plotpoint.lias.skeletons_attack": "under attack by skeletons",
   "text.event.plotpoint.lias.skeletons_attack": "Skeletons are attacking!",

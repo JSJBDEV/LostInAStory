@@ -9,6 +9,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.mob.SkeletonEntity;
+import net.minecraft.entity.passive.WanderingTraderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -109,6 +110,13 @@ public abstract class PlayerStoryCharacterMixin extends LivingEntity implements 
                 GuardianEntity entity = new GuardianEntity(EntityType.GUARDIAN,getWorld());
                 entity.setPos(getX(),getY(),getZ());
                 entity.setCustomName(Text.of("Craig"));
+                getWorld().spawnEntity(entity);
+            }
+            case "event.plotpoint.lias.travelling_merchant" ->
+            {
+                WanderingTraderEntity entity = new WanderingTraderEntity(EntityType.WANDERING_TRADER,getWorld());
+                entity.setPos(getX(),getY(),getZ());
+                //entity.setCustomName(Text.of("Craig"));
                 getWorld().spawnEntity(entity);
             }
         }
