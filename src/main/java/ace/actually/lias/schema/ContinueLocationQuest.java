@@ -7,8 +7,8 @@ import net.minecraft.text.Text;
 import net.minecraft.world.gen.structure.Structure;
 
 public class ContinueLocationQuest extends LocationQuest{
-    public ContinueLocationQuest(ServerPlayerEntity spe, TagKey<Structure> structureTagKey, String additionalEvent) {
-        super(spe, structureTagKey, additionalEvent);
+    public ContinueLocationQuest(ServerPlayerEntity spe, TagKey<Structure> structureTagKey, String additionalEvent,String descriptor) {
+        super(spe, structureTagKey, additionalEvent,descriptor);
     }
 
     @Override

@@ -5,8 +5,6 @@ import ace.actually.lias.interfaces.IStoryCharacter;
 import ace.actually.lias.schema.Quests;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -72,8 +70,8 @@ public class StoryBookItem extends Item {
     {
         NbtCompound compound = new NbtCompound();
         NbtList orderedQuests = new NbtList();
-        NbtCompound quest1 = Quests.randomStartQuest(spe,StructureTags.VILLAGE).toNbt();
-        NbtCompound quest2 = Quests.randomContinueQuest(spe,StructureTags.OCEAN_RUIN).toNbt();
+        NbtCompound quest1 = Quests.randomStartQuestToNbt(spe);
+        NbtCompound quest2 = Quests.randomContinueStructureQuest(spe,CONTINUE_STRUCTURES[spe.getRandom().nextInt(CONTINUE_STRUCTURES.length)]).toNbt();
         orderedQuests.add(quest1);
         orderedQuests.add(quest2);
 

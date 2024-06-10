@@ -27,7 +27,9 @@
 
   "event.plotpoint.lias.travelling_merchant": "where you find a travelling merchant",
 
-  "plotpoint.lias.wakeup": "You wake up in a ",
+  "plotpoint.lias.wakeup": "You wake up in a",
 
-  "plotpoint.lias.setout": "You then set out for a "
+  "plotpoint.lias.setout": "You then set out for a",
+
+  "descriptor.plotpoint.lias.trees": "with trees made of"
 }
