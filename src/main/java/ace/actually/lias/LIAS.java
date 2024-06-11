@@ -1,9 +1,12 @@
 package ace.actually.lias;
 
+import ace.actually.lias.blocks.BossSummonBlock;
+import ace.actually.lias.blocks.BossSummonBlockEntity;
 import ace.actually.lias.blocks.WornParchmentBlock;
 import ace.actually.lias.interfaces.IStoryCharacter;
 import ace.actually.lias.items.CarryingSackItem;
 import ace.actually.lias.items.StoryBookItem;
+import ace.actually.lias.items.TheEndItem;
 import ace.actually.lias.schema.Quests;
 import net.fabricmc.api.ModInitializer;
 
@@ -11,8 +14,10 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -70,12 +75,14 @@ public class LIAS implements ModInitializer {
 
 	public static final StoryBookItem STORY_BOOK_ITEM = new StoryBookItem(new Item.Settings());
 	public static final CarryingSackItem CARRYING_SACK_ITEM = new CarryingSackItem(new Item.Settings().maxCount(1));
+	public static final TheEndItem THE_END_ITEM = new TheEndItem(new Item.Settings());
 	private void registerItems()
 	{
 		int v = Registries.ITEM.size();
 
 		Registry.register(Registries.ITEM,Identifier.of("lias","storybook"),STORY_BOOK_ITEM);
 		Registry.register(Registries.ITEM,Identifier.of("lias","sack"),CARRYING_SACK_ITEM);
+		Registry.register(Registries.ITEM,Identifier.of("lias","the_end"),THE_END_ITEM);
 
 		for (int i = v; i < Registries.ITEM.size(); i++) {
 			int finalI = i;
@@ -85,9 +92,11 @@ public class LIAS implements ModInitializer {
 	}
 
 	public static final WornParchmentBlock WORN_PARCHMENT_BLOCK = new WornParchmentBlock(AbstractBlock.Settings.copy(Blocks.CYAN_WOOL));
+	public static final BossSummonBlock BOSS_SUMMON_BLOCK = new BossSummonBlock(AbstractBlock.Settings.copy(Blocks.MAGENTA_WOOL));
 	private void registerBlocks()
 	{
 		Registry.register(Registries.BLOCK, Identifier.of("lias","worn_parchment_block"),WORN_PARCHMENT_BLOCK);
+		Registry.register(Registries.BLOCK, Identifier.of("lias","boss_summon_block"),BOSS_SUMMON_BLOCK);
 	}
 
 
@@ -100,6 +109,13 @@ public class LIAS implements ModInitializer {
 			return ID;
 		}
 	}
+
+
+	public static BlockEntityType<BossSummonBlockEntity> BOSS_SUMMON_BLOCK_ENTITY = Registry.register(
+			Registries.BLOCK_ENTITY_TYPE,
+			Identifier.of("lias", "boss_summon_block_entity"),
+			FabricBlockEntityTypeBuilder.create(BossSummonBlockEntity::new, BOSS_SUMMON_BLOCK).build()
+	);
 
 
 }

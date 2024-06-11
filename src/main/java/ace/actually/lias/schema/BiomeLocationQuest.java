@@ -60,7 +60,7 @@ public class BiomeLocationQuest{
     {
         NbtCompound compound = new NbtCompound();
         compound.put("location", NbtHelper.fromBlockPos(blockPos));
-
+        compound.putString("questType","biome");
         compound.putString("text",getText().getString());
         compound.putString("additionalEvent",additionalEvent);
         compound.putString("descriptor",descriptor);

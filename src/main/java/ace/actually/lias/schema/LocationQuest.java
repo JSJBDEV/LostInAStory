@@ -56,7 +56,7 @@ public class LocationQuest {
     {
         NbtCompound compound = new NbtCompound();
         compound.put("location", NbtHelper.fromBlockPos(blockPos));
-
+        compound.putString("questType","structure");
         compound.putString("text",getText().getString());
         compound.putString("additionalEvent",additionalEvent);
         compound.putString("descriptor",descriptor);

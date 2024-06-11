@@ -14,6 +14,7 @@
   "text.lias.breaks_crops": "A Sturdy tool for gathering crops",
 
   "item.lias.storybook": "Storybook",
+  "item.lias.the_end": "The End of The Story",
 
   "item.lias.sack": "Carrying Sack",
   "text.lias.sack_carrying": "In this sack there is currently a",
@@ -27,9 +28,11 @@
 
   "event.plotpoint.lias.travelling_merchant": "where you find a travelling merchant",
 
-  "plotpoint.lias.wakeup": "You wake up in a",
+  "plotpoint.lias.wakeup": "You wake up in the",
 
-  "plotpoint.lias.setout": "You then set out for a",
+  "plotpoint.lias.setout": "You then set out for the",
+
+  "plotpoint.lias.finale": "Finally you travel to the",
 
   "descriptor.plotpoint.lias.trees": "with trees made of"
 }

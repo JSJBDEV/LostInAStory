@@ -19,10 +19,14 @@ public class Quests {
     private static final String[] NIL = new String[]{"nil"};
 
     public static final Map<TagKey<Structure>,String[]> additionalStructureEvents;
-    public static final  Map<TagKey<Biome>,String[]> additonalBiomeEvents;
+    public static final  Map<TagKey<Biome>,String[]> additionalBiomeEvents;
 
     public static final Map<TagKey<Structure>,String[]> structureDescriptors;
     public static final  Map<TagKey<Biome>,String[]> biomeDescriptor;
+
+
+
+
     static
     {
         additionalStructureEvents =new HashMap<>();
@@ -32,8 +36,9 @@ public class Quests {
         structureDescriptors=new HashMap<>();
 
 
-        additonalBiomeEvents = new HashMap<>();
-        additonalBiomeEvents.put(BiomeTags.IS_FOREST,new String[]{"event.plotpoint.lias.skeletons_attack","event.plotpoint.lias.travelling_merchant"});
+        additionalBiomeEvents = new HashMap<>();
+        additionalBiomeEvents.put(BiomeTags.IS_FOREST,new String[]{"event.plotpoint.lias.skeletons_attack","event.plotpoint.lias.travelling_merchant"});
+        additionalBiomeEvents.put(BiomeTags.IGLOO_HAS_STRUCTURE,new String[]{"event.plotpoint.lias.skeletons_attack","event.plotpoint.lias.travelling_merchant"});
 
         biomeDescriptor=new HashMap<>();
         biomeDescriptor.put(BiomeTags.IS_FOREST,new String[]{"descriptor.plotpoint.lias.trees"});
@@ -41,11 +46,27 @@ public class Quests {
     public static final TagKey<Structure>[] STRUCTURE_TAGS = new TagKey[]{StructureTags.VILLAGE,StructureTags.SHIPWRECK};
     public static final TagKey<Biome>[] BIOME_TAGS = new TagKey[]{BiomeTags.IS_FOREST};
     
-    public static ContinueLocationQuest randomContinueStructureQuest(ServerPlayerEntity spe, TagKey<Structure> structureTagKey)
+    private static ContinueLocationQuest continueStructureQuest(ServerPlayerEntity spe, TagKey<Structure> structureTagKey)
     {
         String[] possibleEvents = additionalStructureEvents.getOrDefault(structureTagKey,NIL);
         String[] possibleDescriptors = structureDescriptors.getOrDefault(structureTagKey,NIL);
         return new ContinueLocationQuest(spe,structureTagKey,possibleEvents[spe.getRandom().nextInt(possibleEvents.length)],possibleDescriptors[spe.getRandom().nextInt(possibleDescriptors.length)]);
+    }
+
+    private static FinaleLocationQuest finaleStructureQuest(ServerPlayerEntity spe, TagKey<Structure> structureTagKey)
+    {
+        String[] possibleEvents = additionalStructureEvents.getOrDefault(structureTagKey,NIL);
+        String[] possibleDescriptors = structureDescriptors.getOrDefault(structureTagKey,NIL);
+        return new FinaleLocationQuest(spe,structureTagKey,possibleEvents[spe.getRandom().nextInt(possibleEvents.length)],possibleDescriptors[spe.getRandom().nextInt(possibleDescriptors.length)]);
+    }
+    public static NbtCompound randomFinalQuestToNbt(ServerPlayerEntity spe)
+    {
+        return finaleStructureQuest(spe,STRUCTURE_TAGS[spe.getRandom().nextInt(STRUCTURE_TAGS.length)]).toNbt();
+    }
+
+    public static NbtCompound randomContinueQuestToNbt(ServerPlayerEntity spe)
+    {
+        return continueStructureQuest(spe,STRUCTURE_TAGS[spe.getRandom().nextInt(STRUCTURE_TAGS.length)]).toNbt();
     }
 
     public static NbtCompound randomStartQuestToNbt(ServerPlayerEntity spe)
@@ -68,7 +89,7 @@ public class Quests {
 
     private static BiomeLocationQuest biomeStartQuest(ServerPlayerEntity spe, TagKey<Biome> biomeTagKey)
     {
-        String[] possibleEvents = additonalBiomeEvents.getOrDefault(biomeTagKey,NIL);
+        String[] possibleEvents = additionalBiomeEvents.getOrDefault(biomeTagKey,NIL);
         String[] possibleDescriptors = biomeDescriptor.getOrDefault(biomeTagKey,NIL);
         return new BiomeLocationQuest(spe,biomeTagKey,possibleEvents[spe.getRandom().nextInt(possibleEvents.length)],possibleDescriptors[spe.getRandom().nextInt(possibleDescriptors.length)]+"/minecraft:diamond_block");
     }
@@ -115,6 +136,16 @@ public class Quests {
             return quest.getString("descriptor");
         }
         return "Nothing";
+    }
+    public static String getNextQuestType(IStoryCharacter character)
+    {
+        NbtList quests = getQuestList(character);
+        if(!quests.isEmpty())
+        {
+            NbtCompound quest = quests.getCompound(0);
+            return quest.getString("questType");
+        }
+        return "nil";
     }
 
     public static NbtList getQuestList(IStoryCharacter character)

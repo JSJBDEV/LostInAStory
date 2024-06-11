@@ -19,6 +19,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -99,7 +101,17 @@ public abstract class PlayerStoryCharacterMixin extends LivingEntity implements 
         sendMessage(Text.translatable("text.lias.location_found"));
         String add = Quests.getNextQuestEvent(this);
         String descriptor = Quests.getNextQuestDescriptor(this);
+        String type = Quests.getNextQuestType(this);
         Quests.getQuestList(this).remove(0);
+
+        if(type.equals("biome"))
+        {
+            BlockPos fire = getBlockPos().add(2,0,2);
+            int y = getWorld().getChunk(fire).sampleHeightmap(Heightmap.Type.WORLD_SURFACE_WG, fire.getX() & 15, fire.getZ() & 15);
+            getWorld().setBlockState(fire.add(0,y,0),Blocks.CAMPFIRE.getDefaultState());
+        }
+
+
         switch (add)
         {
             case "event.plotpoint.lias.skeletons_attack"->

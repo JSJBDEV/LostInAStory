@@ -71,7 +71,7 @@ public class StoryBookItem extends Item {
         NbtCompound compound = new NbtCompound();
         NbtList orderedQuests = new NbtList();
         NbtCompound quest1 = Quests.randomStartQuestToNbt(spe);
-        NbtCompound quest2 = Quests.randomContinueStructureQuest(spe,CONTINUE_STRUCTURES[spe.getRandom().nextInt(CONTINUE_STRUCTURES.length)]).toNbt();
+        NbtCompound quest2 = Quests.randomContinueQuestToNbt(spe);
         orderedQuests.add(quest1);
         orderedQuests.add(quest2);
 
