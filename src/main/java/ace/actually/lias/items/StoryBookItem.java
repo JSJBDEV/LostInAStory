@@ -72,8 +72,10 @@ public class StoryBookItem extends Item {
         NbtList orderedQuests = new NbtList();
         NbtCompound quest1 = Quests.randomStartQuestToNbt(spe);
         NbtCompound quest2 = Quests.randomContinueQuestToNbt(spe);
+        NbtCompound quest3 = Quests.randomFinalQuestToNbt(spe);
         orderedQuests.add(quest1);
         orderedQuests.add(quest2);
+        orderedQuests.add(quest3);
 
         compound.put("quests",orderedQuests);
         ItemStack stack = new ItemStack(LIAS.STORY_BOOK_ITEM);

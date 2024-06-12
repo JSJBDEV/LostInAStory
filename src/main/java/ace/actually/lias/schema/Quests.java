@@ -1,14 +1,22 @@
 package ace.actually.lias.schema;
 
 import ace.actually.lias.interfaces.IStoryCharacter;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.registry.tag.StructureTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.structure.StructurePlacementData;
+import net.minecraft.structure.StructureTemplate;
+import net.minecraft.structure.StructureTemplateManager;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.structure.Structure;
 
 import java.util.HashMap;
@@ -57,7 +65,7 @@ public class Quests {
     {
         String[] possibleEvents = additionalStructureEvents.getOrDefault(structureTagKey,NIL);
         String[] possibleDescriptors = structureDescriptors.getOrDefault(structureTagKey,NIL);
-        return new FinaleLocationQuest(spe,structureTagKey,possibleEvents[spe.getRandom().nextInt(possibleEvents.length)],possibleDescriptors[spe.getRandom().nextInt(possibleDescriptors.length)]);
+        return new FinaleLocationQuest(spe,"Bamboo Arena",possibleEvents[spe.getRandom().nextInt(possibleEvents.length)],possibleDescriptors[spe.getRandom().nextInt(possibleDescriptors.length)]);
     }
     public static NbtCompound randomFinalQuestToNbt(ServerPlayerEntity spe)
     {
@@ -152,4 +160,17 @@ public class Quests {
     {
         return (NbtList) character.getStory().get("quests");
     }
+
+    public static void spawnStructure(ServerWorld world, BlockPos pos, Identifier name)
+    {
+        StructureTemplateManager manager = world.getStructureTemplateManager();
+
+        StructureTemplate structureTemplate = manager.getTemplate(name).get();
+
+        StructurePlacementData data = new StructurePlacementData().setIgnoreEntities(false);
+        structureTemplate.place(world,pos,pos,data,world.getRandom(),4);
+
+    }
+
+
 }
