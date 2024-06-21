@@ -99,7 +99,7 @@ public class Quests {
     {
         String[] possibleEvents = additionalBiomeEvents.getOrDefault(biomeTagKey,NIL);
         String[] possibleDescriptors = biomeDescriptor.getOrDefault(biomeTagKey,NIL);
-        return new BiomeLocationQuest(spe,biomeTagKey,possibleEvents[spe.getRandom().nextInt(possibleEvents.length)],possibleDescriptors[spe.getRandom().nextInt(possibleDescriptors.length)]+"/minecraft:diamond_block");
+        return new BiomeLocationQuest(spe,biomeTagKey,possibleEvents[spe.getRandom().nextInt(possibleEvents.length)],possibleDescriptors[spe.getRandom().nextInt(possibleDescriptors.length)]+"/minecraft:gold_block");
     }
 
     public static String getNextQuestText(IStoryCharacter character)
