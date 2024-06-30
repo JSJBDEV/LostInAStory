@@ -16,6 +16,9 @@
   "item.lias.storybook": "Storybook",
   "item.lias.the_end": "The End of The Story",
 
+  "item.lias.dustybook": "Dusty Book",
+  "text.lias.dusty_book":"I wonder what secrets it holds...",
+
   "item.lias.sack": "Carrying Sack",
   "text.lias.sack_carrying": "In this sack there is currently a",
   "text.lias.sack_breaks": "Oh no! the sack has broken",

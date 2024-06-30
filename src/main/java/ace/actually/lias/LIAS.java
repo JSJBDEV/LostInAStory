@@ -5,6 +5,7 @@ import ace.actually.lias.blocks.BossSummonBlockEntity;
 import ace.actually.lias.blocks.WornParchmentBlock;
 import ace.actually.lias.interfaces.IStoryCharacter;
 import ace.actually.lias.items.CarryingSackItem;
+import ace.actually.lias.items.DustyBookItem;
 import ace.actually.lias.items.StoryBookItem;
 import ace.actually.lias.items.TheEndItem;
 import ace.actually.lias.schema.Quests;
@@ -66,20 +67,27 @@ public class LIAS implements ModInitializer {
 		{
 			context.player().server.execute(()->
 			{
-				IStoryCharacter character = (IStoryCharacter) context.player();
-				context.player().sendMessage(Text.translatable("text.lias.consider1").append(" \"").append(Quests.getNextQuestText(character)).append("\" ").append(Text.translatable("text.lias.consider2")));
+				if(context.player().getWorld().getRegistryKey()==STORYTELLERS_DIMENSION)
+				{
+					IStoryCharacter character = (IStoryCharacter) context.player();
+					context.player().sendMessage(Text.translatable("text.lias.consider1").append(" \"").append(Quests.getNextQuestText(character)).append("\" ").append(Text.translatable("text.lias.consider2")));
+				}
+
+
 			});
 		}));
 		LOGGER.info("Hello Fabric world!");
 	}
 
 	public static final StoryBookItem STORY_BOOK_ITEM = new StoryBookItem(new Item.Settings());
+	public static final DustyBookItem DUSTY_BOOK_ITEM = new DustyBookItem(new Item.Settings());
 	public static final CarryingSackItem CARRYING_SACK_ITEM = new CarryingSackItem(new Item.Settings().maxCount(1));
 	public static final TheEndItem THE_END_ITEM = new TheEndItem(new Item.Settings());
 	private void registerItems()
 	{
 		int v = Registries.ITEM.size();
 
+		Registry.register(Registries.ITEM,Identifier.of("lias","dustybook"),DUSTY_BOOK_ITEM);
 		Registry.register(Registries.ITEM,Identifier.of("lias","storybook"),STORY_BOOK_ITEM);
 		Registry.register(Registries.ITEM,Identifier.of("lias","sack"),CARRYING_SACK_ITEM);
 		Registry.register(Registries.ITEM,Identifier.of("lias","the_end"),THE_END_ITEM);

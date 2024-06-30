@@ -56,34 +56,14 @@ public class StoryBookItem extends Item {
 
 
             }
-            else
-            {
-                spe.giveItemStack(makeRandomStoryBook(spe));
-            }
+
 
         }
         return super.use(world, user, hand);
     }
 
-    private static final TagKey<Structure>[] CONTINUE_STRUCTURES = new TagKey[]{StructureTags.OCEAN_RUIN,LIAS.DESERT_PYRAMIDS,LIAS.JUNGLE_PYRAMIDS};
-    public static ItemStack makeRandomStoryBook(ServerPlayerEntity spe)
-    {
-        NbtCompound compound = new NbtCompound();
-        NbtList orderedQuests = new NbtList();
-        NbtCompound quest1 = Quests.randomStartQuestToNbt(spe);
-        NbtCompound quest2 = Quests.randomContinueQuestToNbt(spe);
-        NbtCompound quest3 = Quests.randomFinalQuestToNbt(spe);
-        orderedQuests.add(quest1);
-        orderedQuests.add(quest2);
-        orderedQuests.add(quest3);
 
-        compound.put("quests",orderedQuests);
-        ItemStack stack = new ItemStack(LIAS.STORY_BOOK_ITEM);
 
-        stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(compound));
-
-        return stack;
-    }
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
