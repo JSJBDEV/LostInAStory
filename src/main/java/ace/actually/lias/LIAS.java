@@ -4,10 +4,7 @@ import ace.actually.lias.blocks.BossSummonBlock;
 import ace.actually.lias.blocks.BossSummonBlockEntity;
 import ace.actually.lias.blocks.WornParchmentBlock;
 import ace.actually.lias.interfaces.IStoryCharacter;
-import ace.actually.lias.items.CarryingSackItem;
-import ace.actually.lias.items.DustyBookItem;
-import ace.actually.lias.items.StoryBookItem;
-import ace.actually.lias.items.TheEndItem;
+import ace.actually.lias.items.*;
 import ace.actually.lias.schema.Quests;
 import net.fabricmc.api.ModInitializer;
 
@@ -85,7 +82,8 @@ public class LIAS implements ModInitializer {
 	public static final StoryBookItem STORY_BOOK_ITEM = new StoryBookItem(new Item.Settings());
 	public static final DustyBookItem DUSTY_BOOK_ITEM = new DustyBookItem(new Item.Settings());
 	public static final CarryingSackItem CARRYING_SACK_ITEM = new CarryingSackItem(new Item.Settings().maxCount(1));
-	public static final TheEndItem THE_END_ITEM = new TheEndItem(new Item.Settings());
+	public static final ExitClauseItem THE_END_ITEM = new ExitClauseItem(new Item.Settings());
+	public static final ExitClauseItem EXIT_CLAUSE_ITEM = new ExitClauseItem(new Item.Settings());
 
 	public static List<Item> ITEMS = new ArrayList<>();
 	private void registerItems()
@@ -94,6 +92,7 @@ public class LIAS implements ModInitializer {
 		registerItem("storybook",STORY_BOOK_ITEM);
 		registerItem("sack",CARRYING_SACK_ITEM);
 		registerItem("the_end",THE_END_ITEM);
+		registerItem("exit_clause",EXIT_CLAUSE_ITEM);
 
 		for(Item item: ITEMS)
 		{

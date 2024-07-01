@@ -83,7 +83,7 @@ public interface LootMixin {
             axe.set(DataComponentTypes.ITEM_NAME,Text.translatable("item.lias.farmers_scythe"));
             entity.setStack(2,axe);
         }
-        if(player.getRandom().nextInt(1)==0)
+        if(player.getRandom().nextInt(5)==0)
         {
             ItemStack sack = new ItemStack(LIAS.CARRYING_SACK_ITEM);
 
@@ -91,6 +91,11 @@ public interface LootMixin {
             BlockPredicatesChecker checker = new BlockPredicatesChecker(Arrays.asList(pick),false);
             sack.set(DataComponentTypes.CAN_PLACE_ON,checker);
             entity.setStack(3,sack);
+        }
+        if(player.getRandom().nextInt(5)==0)
+        {
+            ItemStack exit = new ItemStack(LIAS.EXIT_CLAUSE_ITEM);
+            entity.setStack(4,exit);
         }
 
 

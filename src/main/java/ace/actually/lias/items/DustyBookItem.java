@@ -34,7 +34,7 @@ public class DustyBookItem extends Item {
             spe.giveItemStack(makeRandomStoryBook(spe));
             if(spe.getStackInHand(hand).isOf(LIAS.DUSTY_BOOK_ITEM))
             {
-                spe.getStackInHand(hand).setCount(0);
+                spe.getStackInHand(hand).decrement(1);
             }
 
         }
