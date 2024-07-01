@@ -37,6 +37,9 @@ import net.minecraft.world.gen.structure.Structure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LIAS implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
@@ -83,20 +86,24 @@ public class LIAS implements ModInitializer {
 	public static final DustyBookItem DUSTY_BOOK_ITEM = new DustyBookItem(new Item.Settings());
 	public static final CarryingSackItem CARRYING_SACK_ITEM = new CarryingSackItem(new Item.Settings().maxCount(1));
 	public static final TheEndItem THE_END_ITEM = new TheEndItem(new Item.Settings());
+
+	public static List<Item> ITEMS = new ArrayList<>();
 	private void registerItems()
 	{
-		int v = Registries.ITEM.size();
+		registerItem("dustybook",DUSTY_BOOK_ITEM);
+		registerItem("storybook",STORY_BOOK_ITEM);
+		registerItem("sack",CARRYING_SACK_ITEM);
+		registerItem("the_end",THE_END_ITEM);
 
-		Registry.register(Registries.ITEM,Identifier.of("lias","dustybook"),DUSTY_BOOK_ITEM);
-		Registry.register(Registries.ITEM,Identifier.of("lias","storybook"),STORY_BOOK_ITEM);
-		Registry.register(Registries.ITEM,Identifier.of("lias","sack"),CARRYING_SACK_ITEM);
-		Registry.register(Registries.ITEM,Identifier.of("lias","the_end"),THE_END_ITEM);
-
-		for (int i = v; i < Registries.ITEM.size(); i++) {
-			int finalI = i;
-			ItemGroupEvents.modifyEntriesEvent(Registries.ITEM_GROUP.getKey(TAB).get())
-					.register(a-> a.add(Registries.ITEM.get(finalI).getDefaultStack()));
+		for(Item item: ITEMS)
+		{
+			ItemGroupEvents.modifyEntriesEvent(Registries.ITEM_GROUP.getKey(TAB).get()).register(a->a.add(item));
 		}
+	}
+
+	private void registerItem(String name, Item item)
+	{
+		ITEMS.add(Registry.register(Registries.ITEM,Identifier.of("lias",name),item));
 	}
 
 	public static final WornParchmentBlock WORN_PARCHMENT_BLOCK = new WornParchmentBlock(AbstractBlock.Settings.copy(Blocks.CYAN_WOOL));
